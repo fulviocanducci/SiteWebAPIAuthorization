@@ -1,7 +1,5 @@
 var app = angular.module("app",["ngRoute"]);
 
-app.constant("$url", { "path": "http://localhost:52246/" });
-
 app.run(["$auth", "$location", function ($authorization) 
 { 
     $authorization.init(); 
@@ -24,8 +22,8 @@ app.factory("$auth", ["$location", function($location)
     var _logout = function()
     {        
         localStorage.removeItem("token");
-        localStorage.clear();
-        return true;
+        localStorage.clear();     
+        _init();
     }
     var _init = function()
     {

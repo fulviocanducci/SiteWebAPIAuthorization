@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using WebApi.Models;
 
@@ -11,6 +12,7 @@ namespace WebApi.Controllers
 {
     [Authorize()]
     [RoutePrefix("api/v1")]
+    [EnableCors("*","*","*")]
     public class CreditsController : ApiController
     {
         private DataContext db = new DataContext();
@@ -35,7 +37,7 @@ namespace WebApi.Controllers
         }
 
         [Route("credits/{id}")]
-        [ResponseType(typeof(void))]
+        [ResponseType(typeof(Credit))]
         public async Task<IHttpActionResult> PutCredit(int id, Credit credit)
         {
             if (!ModelState.IsValid)
@@ -66,7 +68,7 @@ namespace WebApi.Controllers
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(credit);
         }
 
         [Route("credits")]
@@ -81,7 +83,7 @@ namespace WebApi.Controllers
             db.Credits.Add(credit);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = credit.Id }, credit);
+            return Ok(credit);
         }
 
         [Route("credits/{id}")]

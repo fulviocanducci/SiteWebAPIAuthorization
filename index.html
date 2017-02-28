@@ -2,18 +2,44 @@
 <html ng-app="app">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <head>
+        <meta charset="utf-8"/>
         <title>Angular & ASPNET Web API</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection" />
     </head>    
     </script>
-    <body ng-controller="HomeCtrl">    
-    <ng-view></ng-view>
+    <body ng-controller="HomeCtrl">       
+      <nav class="light-blue lighten-1" role="navigation">
+      <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="" ng-click="send('credit')">Crédito</a></li>
+          <li><a href="" ng-click="logout()">Sair</a></li>
+        </ul>
+        <ul id="nav-mobile" class="side-nav">
+          <li><a href="" ng-click="send('credit')">Crédito</a></li>
+          <li><a href="" ng-click="logout()">Sair</a></li>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    </nav> 
+    
+    <div class="container">
+      <ng-view></ng-view>
+    </div>
     <script src="js/jquery.min.js"></script>    
     <script src="js/angular.min.js"></script>    
     <script src="js/angular-route.min.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/constant.js"></script>
     <script src="js/config.js"></script>
     <script src="js/ctrl.js"></script>
     <script src="js/materialize.min.js"></script>
+    <script>
+    (function($){
+        $(function(){
+            $('.button-collapse').sideNav();
+        });
+        })(jQuery);
+    </script>
     </body>            
 </html>

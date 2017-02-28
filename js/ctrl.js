@@ -1,10 +1,91 @@
 
-app.controller("HomeCtrl", ["$scope", "$auth", function($scope, $auth)
+app.controller("HomeCtrl", ["$scope", "$auth", "$location", function($scope, $auth, $location)
 {
 
     $auth.init();
 
-    $scope.token = $auth.getToken();
+    $scope.send = function(url)
+    {
+        $location.path(url);
+    }
+
+    $scope.logout = function()
+    {
+        $auth.logout();        
+    }
+}]);
+
+app.controller("CreditCtrl", ["$scope", "$auth", "$url","$http", function($scope, $auth, $url,$http)
+{
+
+    $auth.init();
+    
+    $scope.items = [];
+
+    $http.defaults.headers.common["Authorization"] = $auth.getToken();
+
+    $scope.add = function(_description)
+    {
+        $http({
+                method: "POST",
+                url: $url.path + "api/v1/credits",
+                data: { Id: 0, Description: _description }
+            })
+            .then(
+                function successCallback(response) 
+                {   
+                    $scope.items.push(response.data);
+                }, 
+                function erroCallBack(response)
+                {                
+                    if (response.status == 401){
+                        $auth.logout();
+                        window.location.reload();                  
+                    }
+                }
+            );
+    }
+    $scope.update = function(item)
+    {
+        $http({
+                method: "PUT",
+                url: $url.path + "api/v1/credits/" + item.id,
+                data: { Id: item.id, Description: item.description }
+            })
+            .then(
+                function successCallback(response) 
+                {                                
+                
+                }, 
+                function erroCallBack(response) {                
+                    if (response.status == 401){
+                        $auth.logout();
+                        window.location.reload();                        
+                    }
+                }
+            );
+    }
+
+    $scope.init = function()
+    {
+        $http({
+                method: "GET",
+                url: $url.path + "api/v1/credits"
+            })
+            .then(
+                function successCallback(response) 
+                {                         
+                    $scope.items = response.data;
+                }, 
+                function erroCallBack(response){                                    
+                    if (response.status == 401){
+                        $auth.logout();
+                        window.location.reload();
+                    }
+                }
+            );
+    }
+    $scope.init();
 
 }]);
 
@@ -32,15 +113,21 @@ app.controller("LoginCtrl", ["$scope", "$auth", "$http", "$url", "$location", fu
                 return $scope.tranform(obj);
             }
         })
-        .then(function successCallback(response) {
-            $auth.setToken(response.data.access_token);            
-            $location.path('/');
-        });/*
-        .error(function errorCallback(response) {
-            if (response.error === "invalid_grant") {
-                alert("Usuário e senhas inválidos");
+        .then(
+            function successCallback(response) {
+                $auth.setToken(response.data.access_token);            
+                $location.path('/');
+            },
+            function erroCallBack(response)
+            {
+                console.log(response.status);
+                if (response.status == 400){ // bad request
+                        
+                }
+                //$auth.logout();
+                //window.location.reload();                
             }
-        });*/
+        );
     }
     $scope.tranform = function (obj) {
         var str = [];
