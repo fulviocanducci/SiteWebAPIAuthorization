@@ -1,0 +1,24 @@
+<div ng-controller="LoginCtrl">
+    <div style="margin-left: auto; margin-right: auto; width: 300px; margin-top: 125px">
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input placeholder="Usuário" id="username" ng-model="username" type="text" class="validate">
+                        <label for="username">Usuário</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input placeholder="Senha" id="password" ng-model="password" type="text" class="validate">
+                        <label for="password">Senha</label>
+                    </div>
+                </div>
+                <div class="row center-align">
+                    <button class="waves-effect waves-light btn" ng-click="tryLogin()">Logar</button>
+                </div>
+            </form>
+        </div>
+    </div>    
+</div>
+
