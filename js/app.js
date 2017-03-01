@@ -5,7 +5,12 @@ app.run(["$auth", "$location", function ($authorization)
     $authorization.init(); 
 }]);
 
-app.factory("$auth", ["$location", function($location)
+app.config(['$httpProvider',function ($httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+ }])
+
+app.factory("$auth", ["$location", "$http", function($location,$http)
 {
     var _getToken = function()
     {
@@ -23,7 +28,8 @@ app.factory("$auth", ["$location", function($location)
     {        
         localStorage.removeItem("token");
         localStorage.clear();     
-        _init();
+        $location.path("/login");        
+        $http.defaults.headers.common["Authorization"] = null;
     }
     var _init = function()
     {

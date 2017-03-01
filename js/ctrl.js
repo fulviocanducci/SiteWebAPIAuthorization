@@ -23,13 +23,15 @@ app.controller("CreditCtrl", ["$scope", "$auth", "$url","$http", function($scope
     $scope.items = [];
 
     $http.defaults.headers.common["Authorization"] = $auth.getToken();
+   
 
     $scope.add = function(_description)
     {
         $http({
                 method: "POST",
                 url: $url.path + "api/v1/credits",
-                data: { Id: 0, Description: _description }
+                data: { Id: 0, Description: _description },
+                withCredentials: true
             })
             .then(
                 function successCallback(response) 
@@ -50,7 +52,8 @@ app.controller("CreditCtrl", ["$scope", "$auth", "$url","$http", function($scope
         $http({
                 method: "PUT",
                 url: $url.path + "api/v1/credits/" + item.id,
-                data: { Id: item.id, Description: item.description }
+                data: { Id: item.id, Description: item.description },
+                withCredentials: true
             })
             .then(
                 function successCallback(response) 
@@ -70,7 +73,8 @@ app.controller("CreditCtrl", ["$scope", "$auth", "$url","$http", function($scope
     {
         $http({
                 method: "GET",
-                url: $url.path + "api/v1/credits"
+                url: $url.path + "api/v1/credits",
+                withCredentials: true
             })
             .then(
                 function successCallback(response) 
@@ -109,6 +113,7 @@ app.controller("LoginCtrl", ["$scope", "$auth", "$http", "$url", "$location", fu
             url: $url.path + "token",
             data: data,
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            withCredentials: true,
             transformRequest: function (obj) {
                 return $scope.tranform(obj);
             }
